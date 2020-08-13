@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row section">
+  <div class="col s12">
+      {% if form.errors %}
+        <p>Something went wrong!</p>
+      {% endif %}
+
+
+      {% if next %}
+        <p>You don't have access to that page</p>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class='btn btn-gameTag' type="submit">Login</button>
+        <a class='btn btn-gameTag' href="{% url 'register' %}">Register</a>
+      </form>
+
+    </div>
+</div>
+{% endblock %}
