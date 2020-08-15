@@ -5,7 +5,7 @@
   {% if user.is_authenticated %}
     <div class="container">
         <div class="row mt-5">
-          <div class="col-4 border-right border-dark" style="background-color:white">
+          <div class="col-4 border-right border-grey" style="background-color:white">
             <div class="profile_name mb-4">
                 {{ user.username }}
             </div>
@@ -14,7 +14,6 @@
 
             </div>
             <ul class="list-group">
-              <li class="list-group-item">EDIT PROFILE</li>
               <li class="list-group-item">STATUS</li>
               <li class="list-group-item">LFG</li>
               <li class="list-group-item">TAGS</li>
@@ -22,11 +21,14 @@
             </ul>
 
           </div>
-          <div class="col-8" style="background-color:green">
+          <div class="col-8" style="background-color:white">
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
-              {{ u_form|crispy}}
-              {{ p_form|crispy}}
+              <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Update information</legend>
+                {{ u_form|crispy }}
+                {{ p_form|crispy }}
+              </fieldset>
               <button type="submit" class="btn btn-gameTag">Update</button>
             </form>
           </div>

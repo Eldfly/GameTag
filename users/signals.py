@@ -4,6 +4,8 @@ from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Profile
 
+
+#signlas saves the users that are created as also a Profile object
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
