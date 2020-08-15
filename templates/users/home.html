@@ -3,27 +3,8 @@
 {% block content %}
   {% if user.is_authenticated %}
     <div class="container">
-        <div class="row mt-5">
-          <div class="col-4 border-right border-dark" style="background-color:white">
-            <div class="profile_name mb-4">
-                {{ user.username }}
-            </div>
-            <div class="center mb-4">
-              <img src="{{ user.profile.profile_image.url  }}" alt="profile_pic" class="img-thumbnail">
-
-            </div>
-            <ul class="list-group">
-              <li class="list-group-item">EDIT PROFILE</li>
-              <li class="list-group-item">STATUS</li>
-              <li class="list-group-item">LFG</li>
-              <li class="list-group-item">TAGS</li>
-              <li class="list-group-item">MEDIA</li>
-            </ul>
-
-          </div>
-          <div class="col-8" style="background-color:green">
-            <p>Your name is {{ user.username }}</p>
-          </div>
+      <div class="profile_name mb-4">
+        <p>Welcome  {{ user.username }}</p>
       </div>
     </div>
   {% else %}
