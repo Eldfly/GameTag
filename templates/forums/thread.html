@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <body>
+    <div class="container">
+      <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item">Forums</li>
+        <li class="breadcrumb-item active">{{ forum.name }}</li>
+      </ol>
+    </div>
+  </body>
+{% endblock content %}

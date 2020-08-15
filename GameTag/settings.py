@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     #myApps
     'users',
     'core',
+    'forums',
 
 ]
 

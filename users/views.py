@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.forms.widgets import FileInput
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from forums.models import Forum
 
 
 def register(request):
@@ -25,7 +25,14 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 def home(request):
-    return render(request, 'users/home.html')
+
+    #view the forums on the homepage for the logged in user
+    forums = Forum.objects.all()
+    context = {
+        'forums': forums
+    }
+
+    return render(request, 'users/home.html', context)
 
 @login_required
 def profile(request):

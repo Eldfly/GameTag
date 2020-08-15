@@ -3,8 +3,14 @@
 {% block content %}
   {% if user.is_authenticated %}
     <div class="container">
-      <div class="profile_name mb-4">
-        <p>Welcome  {{ user.username }}</p>
+
+      <div class="row">
+
+            {% for forum in forums %}
+              <div class="col">
+                  <p>{{forum.name}}</p>
+              </div>
+            {% endfor %}
       </div>
     </div>
   {% else %}
