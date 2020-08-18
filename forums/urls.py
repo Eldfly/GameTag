@@ -17,5 +17,10 @@ urlpatterns = [
     #url for reply to a post in a thread
     path('forums/<int:forum_id>/threads/<int:thread_id>/reply/', views.reply_thread, name='reply_thread'),
 
+    #url for update post
+    path('forums/<int:forum_id>/threads/<int:thread_id>/posts/<int:post_id>/edit/', views.PostUpdateView.as_view(), name='edit_post'),
+
+ # url(r'^boards/(?P<pk>\d+)/topics/(?P<topic_pk>\d+)/posts/(?P<post_pk>\d+)/edit/$',
+ #        views.PostUpdateView.as_view(), name='edit_post'),
 
 ]

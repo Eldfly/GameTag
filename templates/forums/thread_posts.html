@@ -40,7 +40,7 @@
            {{ post.content }}
            {% if post.creator == user %}
              <div class="mt-3">
-               <a href="#" class="btn btn-primary btn-sm" role="button">Edit</a>
+               <a href="{% url 'edit_post' post.thread.forum.id post.thread.id post.id %}" class="btn btn-primary btn-sm" role="button">Edit</a>
              </div>
            {% endif %}
          </div>

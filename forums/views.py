@@ -5,10 +5,11 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
+from django.views.generic import UpdateView
+from django.utils import timezone
+from django.utils.decorators import method_decorator
 
 
-
-# Create your views here.
 
 def forum_threads(request, forum_id):
 
@@ -87,3 +88,23 @@ def reply_thread(request, forum_id, thread_id):
         form = ReplyPostForm()
 
     return render(request, 'forums/reply_thread.html', {'thread': thread, 'form': form})
+
+
+@method_decorator(login_required, name='dispatch')
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ('content', )
+    template_name = 'forums/edit_post.html'
+    pk_url_kwarg = 'post_id'
+    context_object_name = 'post'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(creator=self.request.user)
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.updated_by = self.request.user
+        post.updated_at = timezone.now()
+        post.save()
+        return redirect('thread_posts', forum_id=post.thread.forum.id, thread_id=post.thread.id)
