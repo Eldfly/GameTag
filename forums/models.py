@@ -21,6 +21,15 @@ class Forum(models.Model):
             self.slug = slugify(self.name)
         super(Forum, self).save(*args, **kwargs)
 
+    def get_posts_count(self):
+        return Post.objects.filter(thread__forum=self).count()
+
+    def get_posts_count2(self):
+        return f'this is a post'
+
+    def get_last_post(self):
+        return Post.objects.filter(thread__forum=self).order_by('-created_at').first()
+
 class Thread(models.Model):
 
     name = models.CharField(max_length=80, unique=True)

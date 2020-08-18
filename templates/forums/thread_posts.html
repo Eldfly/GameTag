@@ -3,13 +3,13 @@
 {% block title %}{{ thread.name }}{% endblock %}
 
 {% block content %}
-
+<ol class="breadcrumb my-4">
 <li class="breadcrumb-item"><a class="forum" href="{% url 'home' %}">Forums</a></li>
 <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_threads' thread.forum.id %}">{{ thread.forum.name }}</a></li>
 <li class="breadcrumb-item active">{{ thread.name }}</li>
-<br>
+</ol>
 <div class="mb-4">
-   <a href="#" class="btn btn-primary" role="button">Reply</a>
+   <a href="{% url 'reply_thread' thread.forum.id thread.id %}" class="btn btn-primary" role="button">Reply</a>
  </div>
 <!-- {{thread.name}}
 {{ thread.forum.name }}
@@ -18,7 +18,10 @@
 
 {{thread.forum.id}} -->
  {% for post in thread.posts.all %}
-   <div class="card mb-2">
+ <div class="card mb-2 {% if forloop.first %}border-dark{% endif %}">
+   {% if forloop.first %}
+     <div class="card-header text-white bg-dark py-2 px-3">{{ thread.name }}</div>
+   {% endif %}
      <div class="card-body p-3">
        <div class="row">
          <div class="col-2">

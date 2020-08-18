@@ -10,12 +10,12 @@
     </div>
   </body>
   <div class="mb-4">
-  <a href="{% url 'new_thread' forum.id %}" class="btn btn-primary">New topic</a>
+  <a href="{% url 'new_thread' forum.id %}" class="btn btn-primary">New thread</a>
 </div>
   <table class="table">
    <thead class="thead-inverse">
      <tr>
-       <th>Topic</th>
+       <th>Thread</th>
        <th>Starter</th>
        <th>Replies</th>
        <th>Views</th>
@@ -23,13 +23,13 @@
      </tr>
    </thead>
    <tbody>
-     {% for thread in forum.threads.all %}
+     {% for thread in threads %}
        <tr>
-         <td>{{ thread.name }}</td>
+         <td><a class="forum" href="{% url 'thread_posts' forum.id thread.id %}">{{ thread.name }}</a></td>
          <td>{{ thread.creator.username }}</td>
+         <td>{{thread.replies}}</td>
          <td>0</td>
-         <td>0</td>
-         <td>{{ thread.last_updated }}</td>
+         <td>{{ thread.last_activity }}</td>
        </tr>
      {% endfor %}
    </tbody>

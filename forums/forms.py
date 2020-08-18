@@ -1,10 +1,17 @@
 from django import forms
-from .models import Thread
+from .models import Thread, Post
 
-class newThreadForm(forms.ModelForm):
+class NewThreadForm(forms.ModelForm):
 
     content = forms.CharField(widget=forms.Textarea(), max_length=4000)
 
     class Meta:
         model = Thread
         fields = ['name', 'content']
+
+
+class ReplyPostForm(forms.ModelForm):
+
+    class Meta:
+        model = Post
+        fields = ['content', ]
