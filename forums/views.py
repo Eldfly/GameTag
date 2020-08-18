@@ -58,6 +58,8 @@ def new_thread(request, forum_id):
 def thread_posts(request, forum_id, thread_id):
 
     thread = get_object_or_404(Thread, forum=forum_id, id=thread_id)
+    thread.views += 1
+    thread.save()
 
     return render(request, 'forums/thread_posts.html',  {'thread': thread})
 

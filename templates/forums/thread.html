@@ -28,7 +28,7 @@
          <td><a class="forum" href="{% url 'thread_posts' forum.id thread.id %}">{{ thread.name }}</a></td>
          <td>{{ thread.creator.username }}</td>
          <td>{{thread.replies}}</td>
-         <td>0</td>
+         <td>{{ thread.views }}</td>
          <td>{{ thread.last_activity }}</td>
        </tr>
      {% endfor %}

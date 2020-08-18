@@ -38,6 +38,8 @@ class Thread(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='threads')
     created_at = models.DateTimeField(auto_now_add=True)
     last_activity = models.DateTimeField(default=now)
+    views = models.PositiveIntegerField(default=0)
+
 
     def __str__(self):
         truncated_name = Truncator(self.name)
