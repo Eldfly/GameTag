@@ -7,8 +7,8 @@
       <div class="row">
 
             {% for forum in forums %}
-              <div class="col">
-                  <p>{{forum.name}}</p>
+              <div class="col" >
+                  <a class="forum" href="{% url 'forum_threads' forum.id %}">{{ forum.name }}</a>
               </div>
             {% endfor %}
       </div>

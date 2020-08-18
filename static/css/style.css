@@ -46,3 +46,8 @@ a:hover {
 a:active {
   color: #fff !important;
 }
+
+a.forum {
+  color: #000 !important;
+  text-decoration: none !important;
+}
