@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ thread.name }}{% endblock %}
+<!-- {% block stylesheet %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock %}
+
+{% block script %}
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js" async></script>
+  <script>
+      var simplemde = new SimpleMDE({forceSync: true});
+ </script>
+{% endblock %} -->
 
 {% block content %}
 <ol class="breadcrumb my-4">
@@ -10,13 +19,13 @@
   <li class="breadcrumb-item active">Reply</li>
 </ol>
 <br>
-<form method="post">
+<form method="post" class="mb-4" novalidate>
   {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-success">Post</button>
+  {% include 'includes/form.html' %}
+  <button type="submit" class="btn btn-success">Post a reply</button>
 </form>
 
-{% for post in thread.posts.all %}
+{% for post in thread.get_last_ten_posts %}
     <div class="card mb-2 {% if forloop.first %}border-dark{% endif %}">
       {% if forloop.first %}
         <div class="card-header text-white bg-dark py-2 px-3">{{ thread.name }}</div>
@@ -30,7 +39,7 @@
             <small class="text-muted">{{ post.created_at }}</small>
           </div>
         </div>
-        {{ post.content }}
+        {{ post.get_content_as_markdown }}
       </div>
     </div>
  {% endfor %}

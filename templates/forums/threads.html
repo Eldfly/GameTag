@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block content %}
   <body>
     <div class="container">
@@ -24,12 +25,26 @@
    </thead>
    <tbody>
      {% for thread in threads %}
+        {% url 'thread_posts' forum.id thread.id as thread_url %}
        <tr>
-         <td><a class="forum" href="{% url 'thread_posts' forum.id thread.id %}">{{ thread.name }}</a></td>
+         <td>
+            <p class="mb-0">
+              <a class="forum" href="{{ thread_url }}">{{ thread.name }}</a>
+            </p>
+            <small class="text-muted">
+              Pages:
+              {% for i in thread.get_page_range %}
+                <a class="forum" href="{{ thread_url }}?page={{ i }}">{{ i }}</a>
+              {% endfor %}
+              {% if thread.has_many_pages %}
+              ... <a class="forum" href="{{ thread_url }}?page={{ thread.get_page_count }}">Last Page</a>
+              {% endif %}
+            </small>
+          </td>
          <td>{{ thread.creator.username }}</td>
          <td>{{thread.replies}}</td>
          <td>{{ thread.views }}</td>
-         <td>{{ thread.last_activity }}</td>
+         <td>{{ thread.last_activity|naturaltime }}</td>
        </tr>
      {% endfor %}
    </tbody>

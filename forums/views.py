@@ -8,6 +8,7 @@ from django.db.models import Count
 from django.views.generic import UpdateView, ListView
 from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.urls import reverse
 
 
 class ThreadListView(ListView):
@@ -32,8 +33,13 @@ class PostListView(ListView):
     paginate_by = 4
 
     def get_context_data(self, **kwargs):
-        self.thread.views += 1
-        self.thread.save()
+
+        session_key = f'viewed_thread_{self.thread.id}'
+        if not self.request.session.get(session_key, False):
+            self.thread.views += 1
+            self.thread.save()
+            self.request.session[session_key] = True
+
         kwargs['thread'] = self.thread
         return super().get_context_data(**kwargs)
 
@@ -95,7 +101,19 @@ def reply_thread(request, forum_id, thread_id):
                 post.thread = thread
                 post.creator = request.user
                 post.save()
-                return redirect('thread_posts', forum_id=forum_id, thread_id=thread_id)
+
+                thread.last_activity = timezone.now()
+                thread.save()
+
+                thread_url = reverse('thread_posts', kwargs={'forum_id': forum_id, 'thread_id': thread_id})
+                thread_post_url = '{url}?page={page}#{id}'.format(
+                    url=thread_url,
+                    id=post.id,
+                    page=thread.get_page_count()
+                )
+
+                return redirect(thread_post_url)
+                #return redirect('thread_posts', forum_id=forum_id, thread_id=thread_id)
 
     else:
         form = ReplyPostForm()

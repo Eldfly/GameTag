@@ -11,10 +11,9 @@
   <li class="breadcrumb-item active">Edit post</li>
 </ol>
 
-
   <form method="post" class="mb-4" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
+    {% include 'includes/form.html' %}
     <button type="submit" class="btn btn-success">Save changes</button>
     <a class="forum" href="{% url 'thread_posts' post.thread.forum.id post.thread.id %}" class="btn btn-outline-secondary" role="button">Cancel</a>
   </form>
