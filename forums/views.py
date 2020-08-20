@@ -5,22 +5,43 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, ListView
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 
 
+class ThreadListView(ListView):
+    model = Thread
+    context_object_name = 'threads'
+    template_name = 'forums/threads.html'
+    paginate_by = 4
 
-def forum_threads(request, forum_id):
+    def get_context_data(self, **kwargs):
+        kwargs['forum'] = self.forum
+        return super().get_context_data(**kwargs)
 
-    #view the threads for the specific forum
-    try:
-        forum  = get_object_or_404(Forum, id=forum_id)
-    except Forum.DoesNotExist:
-        raise Http404
+    def get_queryset(self):
+        self.forum = get_object_or_404(Forum, id=self.kwargs.get('forum_id'))
+        queryset = self.forum.threads.order_by('-last_activity').annotate(replies=Count('posts') - 1)
+        return queryset
 
-    threads = forum.threads.order_by('-last_activity').annotate(replies=Count('posts') - 1)
-    return render(request, 'forums/thread.html', {'forum': forum, 'threads': threads})
+class PostListView(ListView):
+    model = Post
+    context_object_name = 'posts'
+    template_name = 'forums/thread_posts.html'
+    paginate_by = 4
+
+    def get_context_data(self, **kwargs):
+        self.thread.views += 1
+        self.thread.save()
+        kwargs['thread'] = self.thread
+        return super().get_context_data(**kwargs)
+
+    def get_queryset(self):
+        self.thread = get_object_or_404(Thread, forum_id=self.kwargs.get('forum_id'), id=self.kwargs.get('thread_id'))
+        queryset = self.thread.posts.order_by('created_at')
+        return queryset
+
 
 @login_required
 def new_thread(request, forum_id):
@@ -55,14 +76,6 @@ def new_thread(request, forum_id):
 
     return render(request, 'forums/new_thread.html', {'forum': forum, 'form': form})
 
-@login_required
-def thread_posts(request, forum_id, thread_id):
-
-    thread = get_object_or_404(Thread, forum=forum_id, id=thread_id)
-    thread.views += 1
-    thread.save()
-
-    return render(request, 'forums/thread_posts.html',  {'thread': thread})
 
 @login_required
 def reply_thread(request, forum_id, thread_id):
