@@ -3,12 +3,16 @@
 
 
 {% block content %}
-
 <div class="row section">
-  <div class="col s12">
-      {% if next %}
-        <p>You don't have access to that page</p>
-      {% endif %}
+  <div class="col-md-4 col-md-offset-4">
+  </div>
+  <div class="col-md-4 col-md-offset-4">
+
+        {% if next %}
+        <div class="alert alert-danger">
+          You don't have access to that page
+        </div>
+        {% endif %}
 
       <form method="post">
         {% csrf_token %}
@@ -16,7 +20,10 @@
         <button class='btn btn-gameTag' type="submit">Login</button>
         <a class='btn btn-gameTag' href="{% url 'register' %}">Register</a>
       </form>
+      <a class="foot" href="{% url 'password_reset' %}">Forgott your password?</a>
+  </div>
+  <div class="col-md-4 col-md-offset-4">
+  </div>
 
-    </div>
 </div>
 {% endblock %}

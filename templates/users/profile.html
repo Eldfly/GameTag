@@ -13,12 +13,12 @@
               <img src="{{ user.profile.profile_pic.url  }}" alt="profile_pic" class="img-thumbnail">
 
             </div>
-            <ul class="list-group">
+            <!-- <ul class="list-group">
               <li class="list-group-item">STATUS</li>
               <li class="list-group-item">LFG</li>
               <li class="list-group-item">TAGS</li>
               <li class="list-group-item">MEDIA</li>
-            </ul>
+            </ul> -->
 
           </div>
           <div class="col-8" style="background-color:white">
@@ -29,7 +29,11 @@
                 {{ u_form|crispy }}
                 {{ p_form|crispy }}
               </fieldset>
+              <div class="mb-5">
+                <a href="{% url 'password_change' %}" class="btn btn-secondary">Change Password</a>
+              </div>
               <button type="submit" class="btn btn-gameTag">Update</button>
+
             </form>
           </div>
       </div>

@@ -12,6 +12,7 @@
 
 }
 
+/* GameTag specific */
 .btn-gameTag{
 
   background-color: #862d86;
@@ -19,11 +20,47 @@
 
 }
 
+.page-item.active .page-link {
+  background-color: #862d86 !important;
+  border-color: #862d86 !important;
+}
+
+/* .pagination > li > a
+{
+    background-color: white;
+    color: purple;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: purple;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > a
+{
+    color: white;
+    background-color: purple;
+    border: solid 1px purple;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: purple;
+    border: solid 1px purple;
+} */
+
+
+/*******************/
 .profile_name{
 
   text-align: center;
   color: #862d86;
-  font-size: 2rem;
+  font-size: 4rem;
   font-weight: bold;
 }
 
@@ -49,5 +86,11 @@ a:active {
 
 a.forum {
   color: #000 !important;
+  text-decoration: none !important;
+}
+
+a.foot {
+  color: #000 !important;
+  font-size: 12px !important;
   text-decoration: none !important;
 }

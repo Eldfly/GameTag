@@ -2,16 +2,14 @@
 {% load static %}
 {% load humanize %}
 {% block content %}
-  <body>
-    <div class="container">
-      <ol class="breadcrumb my-4">
-        <li class="breadcrumb-item"><a class='forum' href="{% url 'home' %}">Forums</a></li>
-        <li class="breadcrumb-item active">{{ forum.name }}</li>
-      </ol>
-    </div>
-  </body>
-  <div class="mb-4">
-  <a href="{% url 'new_thread' forum.id %}" class="btn btn-primary">New thread</a>
+<div class="container">
+  <ol class="breadcrumb my-4">
+    <li class="breadcrumb-item"><a class='forum' href="{% url 'home' %}">Forums</a></li>
+    <li class="breadcrumb-item active">{{ forum.name }}</li>
+  </ol>
+
+<div class="mb-4">
+  <a href="{% url 'new_thread' forum.id %}" class="btn btn-gameTag">New thread</a>
 </div>
   <table class="table">
    <thead class="thead-inverse">
@@ -51,5 +49,5 @@
  </table>
 
  {% include 'includes/pagination.html' %}
-
+</div>
 {% endblock content %}
