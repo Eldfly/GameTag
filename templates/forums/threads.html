@@ -1,16 +1,19 @@
+<!-- This page show all the threads in a topic -->
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
 {% block content %}
 <div class="container">
   <ol class="breadcrumb my-4">
-    <li class="breadcrumb-item"><a class='forum' href="{% url 'home' %}">Forums</a></li>
-    <li class="breadcrumb-item active">{{ forum.name }}</li>
+    <li class="breadcrumb-item"><a class='forum' href="{% url 'index' %}">Forums</a></li>
+    <li class="breadcrumb-item"><a class='forum' href="{% url 'forum_topic' topic.forum.slug %}">{{ topic.forum.name }}</a></li>
+    <li class="breadcrumb-item active">{{ topic.name }}</li>
   </ol>
-
+{% if user.is_authenticated %}
 <div class="mb-4">
-  <a href="{% url 'new_thread' forum.id %}" class="btn btn-gameTag">New thread</a>
+  <a href="{% url 'new_thread' topic.forum.slug topic.slug %}" class="btn btn-gameTag">New thread</a>
 </div>
+{% endif %}
   <table class="table">
    <thead class="thead-inverse">
      <tr>
@@ -21,13 +24,13 @@
        <th>Last Update</th>
      </tr>
    </thead>
-   <tbody>
+   <tbody>{{ thread_url }}
      {% for thread in threads %}
-        {% url 'thread_posts' forum.id thread.id as thread_url %}
+        {% url 'thread_posts' topic.forum.slug thread.slug as thread_url %}
        <tr>
          <td>
             <p class="mb-0">
-              <a class="forum" href="{{ thread_url }}">{{ thread.name }}</a>
+              <a class="forum" href="{% url 'thread_posts' topic.forum.slug thread.topic.slug thread.id %}">{{ thread.name }}</a>
             </p>
             <small class="text-muted">
               Pages:

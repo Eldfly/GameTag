@@ -1,6 +1,12 @@
 from django.shortcuts import render
+from forums.models import Forum
 
-
-# Create your views here.
 def index_view(request):
-    return render(request, template_name='index.html')
+
+    #view the forums on the homepage for the logged in user
+    forums = Forum.objects.all()
+    context = {
+        'forums': forums
+    }
+
+    return render(request, 'index.html', context)

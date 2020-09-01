@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Start a new thread{% endblock %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+{% block content %}
+
+  <ol class="breadcrumb my-4">
+    <li class="breadcrumb-item"><a class="forum" href="{% url 'index' %}">Forums</a></li>
+    <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_topic' forum.slug %}">{{ forum.name }}</a></li>
+    <li class="breadcrumb-item active">New topic</li>
+  </ol>
+
+  <form method="post" class="mb-4" novalidate>
+    {% csrf_token %}
+    {% include 'includes/form.html' %}
+    <button type="submit" class="btn btn-gameTag">Create topic</button>
+  </form>
+
+{% endblock %}

@@ -2,24 +2,64 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% if user.is_authenticated %}
+<div class="mb-4">
+  <a href="{% url 'new_forum' %}" class="btn btn-gameTag">New Forum</a>
+</div>
+{% else %}
 <div class="container">
-    <div style="margin-top: 150px">
+    <div class="mb-4">
       <blockquote class="blockquote text-center">
         <p class="mb-0" style="font-size: 3rem">Gamers don't die, they respawn</p>
         <footer class="blockquote-footer" style="font-size: 2rem">Someone on the internet <cite title="Source Title"></cite></footer>
       </blockquote>
     </div>
-    <div class="row mt-5">
-      <div class="col-sm">
+    <div class="row mt-2 mb-5">
+      <div class="col">
           <div class="center">
-              <a href="{% url 'login' %}"><i class="large material-icons" style="color: #602060; font-size: 15rem">videogame_asset</i></a>
-          </div>
-      </div>
-      <div class="col-sm">
-          <div class="center">
-              <a href="{% url 'register' %}"><i class="medium material-icons" style="color: #862d86; font-size: 15rem">account_circle</i></a>
+              <a href="{% url 'login' %}"><i class="large material-icons" style="color: #602060; font-size: 8rem">gamepad</i></a>
           </div>
       </div>
   </div>
 </div>
+{% endif %}
+
+
+<table class="table">
+    <thead class="thead-inverse">
+    <tr>
+      <th>Forum</th>
+      <th>Topics</th>
+      <th>Owner</th>
+      <th>Last activity</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for forum in forums %}
+      <tr>
+        <td>
+          <a class="forum" href="{% url 'forum_topic' forum.slug %}">{{ forum.name }}</a>
+          <small class="text-muted d-block">{{ forum.desc }}</small>
+        </td>
+        <td class="align-middle">
+          {{ forum.topics.count }}
+        </td>
+        <td class="align-middle">
+          {{forum.owner}}
+        </td>
+        <td class="align-middle">
+          {% with post=forum.get_last_post %}
+            <small>
+              <a class="forum" href="#">
+                By {{ post.creator.username }} at {{ post.created_at }}
+              </a>
+            </small>
+          {% endwith %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
 {% endblock content %}

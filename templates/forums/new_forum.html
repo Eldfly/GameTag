@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Create a forum{% endblock %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+{% block content %}
+
+  <form method="post" class="mb-4" novalidate>
+    {% csrf_token %}
+    {% include 'includes/form.html' %}
+    <button type="submit" class="btn btn-gameTag">Create Forum</button>
+  </form>
+
+{% endblock %}

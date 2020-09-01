@@ -1,0 +1,56 @@
+<!-- This page show all the topics in a forum -->
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div class="container">
+  <ol class="breadcrumb my-4">
+    <li class="breadcrumb-item"><a class='forum' href="{% url 'index' %}">Forums</a></li>
+    <li class="breadcrumb-item active">{{ forum.name }}</li>
+  </ol>
+{% if user.is_authenticated %}
+<div class="mb-4">
+  <a href="{% url 'new_topic' forum.slug %}" class="btn btn-gameTag">New topic</a>
+</div>
+{% endif %}
+  <table class="table">
+   <thead class="thead-inverse">
+     <tr>
+       <th>Topic</th>
+       <th>Starter</th>
+       <th>Views</th>
+       <th>Last activity</th>
+     </tr>
+   </thead>
+   <tbody>
+     {% for topic in topics %}
+        <!-- URL for all threads in a topic -->
+        {% url 'topic_threads' topic.forum.slug topic.slug as threads_url %}
+       <tr>
+         <td>
+           <a class="forum" href="{{ threads_url }}">{{ topic.name }}</a>
+           <small class="text-muted d-block">{{ topic.desc }}</small>
+         </td>
+         <td class="align-middle">
+           {{ topic.get_posts_count }}
+         </td>
+         <td class="align-middle">
+           {{ topic.threads.count }}
+         </td>
+         <td class="align-middle">
+           {% with post=topic.get_last_post %}
+             <small>
+               <a class="forum" href="#">
+                 By {{ post.creator.username }} at {{ post.created_at }}
+               </a>
+             </small>
+           {% endwith %}
+         </td>
+       </tr>
+     {% endfor %}
+     </tbody>
+ </table>
+
+ {% include 'includes/pagination.html' %}
+</div>
+{% endblock content %}
