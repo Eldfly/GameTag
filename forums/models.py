@@ -10,6 +10,16 @@ from markdown import markdown
 #DEFAULT VALUES IF none is set
 DEFAULT_USER_ID = 1
 DEFAULT_TOPIC_ID = 1
+DEFAULT_CATEGORY_ID = 1
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=80, unique=True)
+    desc = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.slug
 
 
 class Forum(models.Model):
@@ -17,6 +27,7 @@ class Forum(models.Model):
     desc = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='forums', default=DEFAULT_USER_ID)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='forums', default=DEFAULT_CATEGORY_ID)
     published = models.BooleanField(default=False)
 
     def __str__(self):

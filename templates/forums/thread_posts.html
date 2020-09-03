@@ -3,12 +3,13 @@
 
 {% block content %}
 <ol class="breadcrumb my-4">
-<li class="breadcrumb-item"><a class="forum" href="{% url 'home' %}">Forums</a></li>
-<li class="breadcrumb-item"><a class="forum" href="#">{{ thread.forum.name }}</a></li>
-<li class="breadcrumb-item active">{{ thread.name }}</li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'index' %}">Forums</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_topic' thread.topic.forum.slug %}">{{thread.topic.forum.name}}</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' thread.topic.forum.slug thread.topic.slug %}">{{thread.topic.name}}</a></li>
+  <li class="breadcrumb-item active">{{thread.name}}</li>
 </ol>
 <div class="mb-4">
-   <a href="{% url 'reply_thread' thread.forum.id thread.id %}" class="btn btn-primary" role="button">Reply</a>
+   <a href="{% url 'reply_thread' thread.topic.forum.slug thread.topic.slug thread.id %}" class="btn btn-gameTag" role="button">Reply</a>
  </div>
 
  {% for post in posts  %}
@@ -33,7 +34,7 @@
            {{ post.get_content_as_markdown }}
            {% if post.creator == user %}
              <div class="mt-3">
-               <a href="{% url 'edit_post' post.thread.forum.id post.thread.id post.id %}" class="btn btn-primary btn-sm" role="button">Edit</a>
+               <a href="{% url 'edit_post' post.thread.topic.forum.slug thread.topic.slug thread.id post.id %}" class="btn btn-gameTag btn-sm" role="button">Edit</a>
              </div>
            {% endif %}
          </div>

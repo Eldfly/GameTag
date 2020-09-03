@@ -7,7 +7,7 @@ class NewForumForm(forms.ModelForm):
 
     class Meta:
         model = Forum
-        fields = ['name', 'desc', 'published']
+        fields = ['category', 'name', 'desc', 'published']
 
 class NewTopicForm(forms.ModelForm):
 

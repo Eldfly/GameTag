@@ -59,7 +59,6 @@ class ThreadListView(ListView):
     #     return queryset
 
     def get_queryset(self):
-        print(self.kwargs.get('slug'))
         self.topic = get_object_or_404(Topic, slug=self.kwargs.get('topic_slug'))
         queryset = self.topic.threads.order_by('-last_activity')#.annotate(replies=Count('threads') - 1)
 
@@ -86,7 +85,8 @@ class PostListView(ListView):
         return super().get_context_data(**kwargs)
 
     def get_queryset(self):
-        self.thread = get_object_or_404(Thread, slug=self.kwargs.get('slug'), id=self.kwargs.get('thread_id'))
+        print(self.kwargs.get('topic_id'))
+        self.thread = get_object_or_404(Thread, id=self.kwargs.get('thread_id'))
         queryset = self.thread.posts.order_by('created_at')
         return queryset
 
@@ -198,7 +198,7 @@ def new_thread(request, forum_slug, topic_slug):
 
 
 @login_required
-def reply_thread(request, slug, thread_id):
+def reply_thread(request, forum_slug, topic_slug, thread_id):
 
     try:
         thread  = get_object_or_404(Thread, id=thread_id)
@@ -219,7 +219,7 @@ def reply_thread(request, slug, thread_id):
                 thread.last_activity = timezone.now()
                 thread.save()
 
-                thread_url = reverse('thread_posts', kwargs={'slug': slug, 'thread_id': thread_id})
+                thread_url = reverse('thread_posts', kwargs={'forum_slug': forum_slug, 'topic_slug': topic_slug, 'thread_id': thread_id})
                 thread_post_url = '{url}?page={page}#{id}'.format(
                     url=thread_url,
                     id=post.id,
@@ -253,4 +253,4 @@ class PostUpdateView(UpdateView):
         post.updated_by = self.request.user
         post.updated_at = timezone.now()
         post.save()
-        return redirect('thread_posts', forum_id=post.thread.forum.id, thread_id=post.thread.id)
+        return redirect('thread_posts', forum_slug=post.thread.topic.forum.slug, topic_slug=post.thread.topic.slug, thread_id=post.thread.id)

@@ -30,6 +30,7 @@
     <thead class="thead-inverse">
     <tr>
       <th>Forum</th>
+      <!-- <th>Category</th> -->
       <th>Topics</th>
       <th>Owner</th>
       <th>Last activity</th>
@@ -42,6 +43,9 @@
           <a class="forum" href="{% url 'forum_topic' forum.slug %}">{{ forum.name }}</a>
           <small class="text-muted d-block">{{ forum.desc }}</small>
         </td>
+        <!-- <td class="align-middle">
+          {{ forum.category.name }}
+        </td> -->
         <td class="align-middle">
           {{ forum.topics.count }}
         </td>

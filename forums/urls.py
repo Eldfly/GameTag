@@ -24,12 +24,11 @@ urlpatterns = [
     path('forum/<slug:forum_slug>/topic/<slug:topic_slug>/threads/<int:thread_id>', views.PostListView.as_view(), name='thread_posts'),
 
     #url for reply to a post in a thread
-    path('forum/<slug:forum_slug>/threads/<int:thread_id>/reply/', views.reply_thread, name='reply_thread'),
+    path('forum/<slug:forum_slug>/topic/<slug:topic_slug>/threads/<int:thread_id>/reply/', views.reply_thread, name='reply_thread'),
 
     #url for update post
-    path('forum/<slug:forum_slug>/threads/<int:thread_id>/posts/<int:post_id>/edit/', views.PostUpdateView.as_view(), name='edit_post'),
+    path('forum/<slug:forum_slug>/topic/<slug:topic_slug>/threads/<int:thread_id>/posts/<int:post_id>/edit/', views.PostUpdateView.as_view(), name='edit_post'),
 
- # url(r'^boards/(?P<pk>\d+)/topics/(?P<topic_pk>\d+)/posts/(?P<post_pk>\d+)/edit/$',
- #        views.PostUpdateView.as_view(), name='edit_post'),
+
 
 ]

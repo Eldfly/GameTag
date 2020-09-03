@@ -13,16 +13,17 @@
 
 {% block content %}
 <ol class="breadcrumb my-4">
-  <li class="breadcrumb-item"><a class="forum" href="{% url 'home' %}">Forums</a></li>
-  <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_threads' thread.forum.id %}">{{ thread.forum.name }}</a></li>
-  <li class="breadcrumb-item"><a class="forum" href="{% url 'thread_posts' thread.forum.id thread.id %}">{{ thread.name }}</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'index' %}">Forums</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_topic' thread.topic.forum.slug %}">{{ thread.topic.forum.name }}</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' thread.topic.forum.slug thread.topic.slug %}">{{ thread.topic.name }}</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'thread_posts' thread.topic.forum.slug thread.topic.slug thread.id %}">{{ thread.name }}</a></li>
   <li class="breadcrumb-item active">Reply</li>
 </ol>
 <br>
 <form method="post" class="mb-4" novalidate>
   {% csrf_token %}
   {% include 'includes/form.html' %}
-  <button type="submit" class="btn btn-success">Post a reply</button>
+  <button type="submit" class="btn btn-gameTag">Post reply</button>
 </form>
 
 {% for post in thread.get_last_ten_posts %}
