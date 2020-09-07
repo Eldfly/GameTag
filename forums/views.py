@@ -99,7 +99,7 @@ class PostListView(ListView):
     model = Post
     context_object_name = 'posts'
     template_name = 'forums/thread_posts.html'
-    paginate_by = 4
+    paginate_by = 8
 
     def get_context_data(self, **kwargs):
 

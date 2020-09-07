@@ -55,8 +55,7 @@
      </div>
    </div>
   {% endfor %}
-
-  {% if posts %}
+  {% if posts|length > 5 %}
   <div class="mb-4">
     <a href="{% url 'reply_thread' thread.topic.forum.slug thread.topic.slug thread.id %}" class="btn btn-gameTag" role="button">Reply</a>
   </div>
