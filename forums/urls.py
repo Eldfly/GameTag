@@ -5,6 +5,10 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
 
+    #URL for showimg all forums
+    #path('', views.index_view, name='index'),
+    path('', views.ForumListView.as_view(), name='index'),
+
     #url for creating a new forum
     path('forums/new_forum/', views.new_forum, name='new_forum'),
 

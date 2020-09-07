@@ -17,6 +17,7 @@ class Category(models.Model):
     name = models.CharField(max_length=80, unique=True)
     desc = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.slug
@@ -29,6 +30,7 @@ class Forum(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='forums', default=DEFAULT_USER_ID)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='forums', default=DEFAULT_CATEGORY_ID)
     published = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.slug
@@ -39,11 +41,11 @@ class Forum(models.Model):
             self.slug = slugify(self.name)
         super(Forum, self).save(*args, **kwargs)
 
-    # def get_posts_count(self):
-    #     return Post.objects.filter(thread__forum=self).count()
-    #
-    # def get_last_post(self):
-    #     return Post.objects.filter(thread__forum=self).order_by('-created_at').first()
+    def get_posts_count(self):
+        return Post.objects.filter(thread__topic__forum=self).count()
+
+    def get_last_post(self):
+        return Post.objects.filter(thread__topic__forum=self).order_by('-created_at').first()
 
 class Topic(models.Model):
 
@@ -68,6 +70,12 @@ class Topic(models.Model):
     def __str__(self):
         truncated_name = Truncator(self.name)
         return truncated_name.chars(30)
+
+    def get_thread_count(self):
+        return self.threads.count()
+
+    def get_last_post(self):
+        return Post.objects.filter(thread__topic=self).order_by('-created_at').first()
 
     def get_page_count(self):
         count = self.threads.count()

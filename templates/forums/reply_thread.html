@@ -1,16 +1,5 @@
 {% extends 'base.html' %}
 
-<!-- {% block stylesheet %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-{% endblock %}
-
-{% block script %}
-  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js" async></script>
-  <script>
-      var simplemde = new SimpleMDE({forceSync: true});
- </script>
-{% endblock %} -->
-
 {% block content %}
 <ol class="breadcrumb my-4">
   <li class="breadcrumb-item"><a class="forum" href="{% url 'index' %}">Forums</a></li>
@@ -19,17 +8,19 @@
   <li class="breadcrumb-item"><a class="forum" href="{% url 'thread_posts' thread.topic.forum.slug thread.topic.slug thread.id %}">{{ thread.name }}</a></li>
   <li class="breadcrumb-item active">Reply</li>
 </ol>
-<br>
+
 <form method="post" class="mb-4" novalidate>
   {% csrf_token %}
   {% include 'includes/form.html' %}
   <button type="submit" class="btn btn-gameTag">Post reply</button>
 </form>
 
+
+<br>
 {% for post in thread.get_last_ten_posts %}
-    <div class="card mb-2 {% if forloop.first %}border-dark{% endif %}">
+    <div class="card mb-2 {% if forloop.first %}border-light{% endif %}">
       {% if forloop.first %}
-        <div class="card-header text-white bg-dark py-2 px-3">{{ thread.name }}</div>
+        <div class="card-header font-weight-bold text-black bg-light py-2 px-3">Latest reply</div>
       {% endif %}
       <div class="card-body p-3">
         <div class="row mb-3">
@@ -44,5 +35,6 @@
       </div>
     </div>
  {% endfor %}
+ <br>
 
 {% endblock %}

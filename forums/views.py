@@ -11,7 +11,43 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from .filters import ForumFilter, TopicFilter, ThreadFilter
 
+
+class ForumListView(ListView):
+
+    model = Forum
+    context_object_name = 'forums'
+    template_name = 'index.html'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        forums = Forum.objects.filter(published=True).order_by('name')
+        context = super().get_context_data(**kwargs)
+        #adding the search box to the context
+        context['searchForum'] = ForumFilter(self.request.GET, queryset=forums)
+        return context
+
+    def get_queryset(self):
+        #self.forum = get_object_or_404(Forum, slug=self.kwargs.get('forum_slug'))
+        queryset = Forum.objects.filter(published=True).order_by('name')
+        filter = ForumFilter(self.request.GET, queryset=queryset)
+        return filter.qs
+
+
+# def index_view(request):
+#
+#     #view the forums on the homepage for the logged in user
+#     forums = Forum.objects.all()
+#     searchForum = ForumFilter(request.GET, queryset=forums)
+#     forums = searchForum.qs
+#
+#     context = {
+#         'forums': forums,
+#         'searchForum': searchForum
+#     }
+#
+#     return render(request, 'index.html', context)
 
 
 class TopicListView(ListView):
@@ -19,51 +55,43 @@ class TopicListView(ListView):
     model = Topic
     context_object_name = 'topics'
     template_name = 'forums/topics.html'
-    paginate_by = 4
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         kwargs['forum'] = self.forum
-        return super().get_context_data(**kwargs)
+        topic = Topic.objects.filter(forum=self.forum.id)
+        context = super().get_context_data(**kwargs)
+        #adding the search box to the context
+        context['searchTopic'] = TopicFilter(self.request.GET, queryset=topic)
+        return context
 
     def get_queryset(self):
         self.forum = get_object_or_404(Forum, slug=self.kwargs.get('forum_slug'))
-        queryset = self.forum.topics.order_by('-last_activity').annotate(replies=Count('threads') - 1)
-        return queryset
+        queryset = self.forum.topics.order_by('-last_activity')
+        filter = TopicFilter(self.request.GET, queryset=queryset)
+        return filter.qs
 
 class ThreadListView(ListView):
 
     model = Thread
     context_object_name = 'threads'
     template_name = 'forums/threads.html'
-    paginate_by = 4
+    paginate_by = 30
 
     def get_context_data(self, **kwargs):
-        #  # Call the base implementation first to get a context
-        # context = super().get_context_data(**kwargs)
-        # # Add in a QuerySet of all the books
-        # context['topic'] = Topic.objects.all()
-        # return context
         kwargs['topic'] = self.topic
-        return super().get_context_data(**kwargs)
-    #
-    # def get_queryset(self):
-    #      print(self.kwargs.get('slug'))
-    #      self.topic = get_object_or_404(Topic, slug='test')
-    #      queryset = self.topic.threads.order_by('-last_activity').annotate(replies=Count('threads') - 1)
-    #      return queryset
-    #
-    # def get_queryset(self):
-    #     self.topic = get_object_or_404(Topic, slug=self.kwargs.get('slug'))
-    #     queryset = self.topic.threads.all()
-    #     print(queryset)
-    #     return queryset
+        thread = Thread.objects.filter(topic=self.topic.id)
+        context = super().get_context_data(**kwargs)
+        #adding the search box to the context
+        context['searchThread'] = ThreadFilter(self.request.GET, queryset=thread)
+        return context
+
 
     def get_queryset(self):
         self.topic = get_object_or_404(Topic, slug=self.kwargs.get('topic_slug'))
-        queryset = self.topic.threads.order_by('-last_activity')#.annotate(replies=Count('threads') - 1)
-
-        #queryset = self.topic.threads.all()
-        return queryset
+        queryset = self.topic.threads.order_by('-last_activity').annotate(replies=Count('posts') - 1)
+        filter = ThreadFilter(self.request.GET, queryset=queryset)
+        return filter.qs
 
 
 class PostListView(ListView):
@@ -85,9 +113,9 @@ class PostListView(ListView):
         return super().get_context_data(**kwargs)
 
     def get_queryset(self):
-        print(self.kwargs.get('topic_id'))
+
         self.thread = get_object_or_404(Thread, id=self.kwargs.get('thread_id'))
-        queryset = self.thread.posts.order_by('created_at')
+        queryset = self.thread.posts.order_by('created_at')[1:]
         return queryset
 
 

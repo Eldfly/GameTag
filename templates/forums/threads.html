@@ -2,8 +2,16 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
+{% load crispy_forms_tags %}
 {% block content %}
-<div class="container">
+
+
+<form method="GET" class="mb-4" novalidate>
+  {% csrf_token %}
+  <button style="visibility: hidden;" type="submit" class="btn btn-gameTag">Search</button>
+  {{searchThread.form|crispy}}
+</form>
+
   <ol class="breadcrumb my-4">
     <li class="breadcrumb-item"><a class='forum' href="{% url 'index' %}">Forums</a></li>
     <li class="breadcrumb-item"><a class='forum' href="{% url 'forum_topic' topic.forum.slug %}">{{ topic.forum.name }}</a></li>
@@ -52,5 +60,5 @@
  </table>
 
  {% include 'includes/pagination.html' %}
-</div>
+
 {% endblock content %}
