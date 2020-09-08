@@ -135,9 +135,7 @@ def user_forums(request):
 
 def new_forum(request):
 
-    print('new forum')
     if request.method=='POST':
-            print('test')
             form = NewForumForm(request.POST)
 
             if form.is_valid():
@@ -146,12 +144,6 @@ def new_forum(request):
                 forum.owner = request.user
                 forum.save()
 
-                # post = Post.objects.create(
-                #     content = form.cleaned_data.get('content'),
-                #     thread = thread,
-                #     creator = request.user
-                # )
-
                 return redirect('user_forums')
 
     else:
@@ -159,6 +151,59 @@ def new_forum(request):
 
     return render(request, 'forums/new_forum.html', {'form': form})
 
+
+@method_decorator(login_required, name='dispatch')
+class ForumUpdateView(UpdateView):
+
+    model = Forum
+    fields = ('category', 'desc', 'published' )
+    template_name = 'forums/edit_forum.html'
+    slug_url_kwarg = 'slug'
+    context_object_name = 'forum'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        #get the id from the slug
+        forum_id = Forum.objects.filter(slug=self.kwargs.get('slug')).values_list('id', flat=True)[0]
+
+        context['topics'] = Topic.objects.filter(forum=forum_id)
+        topic = Topic.objects.filter(forum=10)
+        print(forum_id)
+        return context
+
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(owner=self.request.user.id)
+
+    def form_valid(self, form):
+        forum = form.save(commit=False)
+        forum.updated_by = self.request.user
+        forum.updated_at = timezone.now()
+        forum.save()
+        return redirect('user_forums')
+
+@method_decorator(login_required, name='dispatch')
+class TopicUpdateView(UpdateView):
+
+    model = Topic
+    fields = ('name', 'desc')
+    template_name = 'forums/edit_forum.html'
+    pk_url_kwarg = 'forum_id'
+    context_object_name = 'topic'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(forum=forum_id)
+
+    def form_valid(self, form):
+        forum = form.save(commit=False)
+        forum.updated_by = self.request.user
+        forum.updated_at = timezone.now()
+        forum.save()
+        return redirect('user_forums')
 
 
 @login_required
@@ -186,16 +231,8 @@ def new_topic(request, forum_slug):
                     topic.save()
                 else:
                     messages.error(request, 'This topic already exists in this')
-                    #raise ValidationError('This topic already exists in this forum')
-                    #redirect('forum_topic', forum_slug=forum_slug)
 
-
-                # post = Post.objects.create(
-                #     content = form.cleaned_data.get('content'),
-                #     thread = thread,
-                #     creator = request.user
-                # )
-                return redirect('forum_topic', forum_slug=forum_slug)
+                return redirect('edit_forum', slug=forum_slug)
 
     else:
         form = NewTopicForm()

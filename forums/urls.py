@@ -14,6 +14,9 @@ urlpatterns = [
     #url for creating a new forum
     path('forums/new_forum/', views.new_forum, name='new_forum'),
 
+    #url for edit a forum
+    path('forums/user_forums/<slug:slug>/edit_forum/', views.ForumUpdateView.as_view(), name='edit_forum'),
+
     #url for showing all topics in a forum
     path('forum/<slug:forum_slug>/', views.TopicListView.as_view(), name='forum_topic'),
 

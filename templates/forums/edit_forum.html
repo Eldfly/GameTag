@@ -1,73 +1,80 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block title %}User Forums{% endblock %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 
 {% block content %}
-<div class="profile_name mt-4">
-<i class="large material-icons" style="font-size:6rem">bookmark_border</i><h1>{{user.username}} forums </h1>
+<div class="profile_name mt-5 mb-4">
+<i class="large material-icons" style="font-size:6rem">games</i><h1>{{forum.name}}</h1>
 </div>
 
+<div class="edit_forum">
+  <form method="post" class="mb-4 mt-4" novalidate>
+      {% csrf_token %}
+      {% include 'includes/form.html' %}
+      <button type="submit" class="btn btn-gameTag">Save changes</button>
+      <a class="forum" href="{% url 'user_forums' %}" class="btn btn-outline-secondary" role="button">Cancel</a>
+  </form>
+</div>
 
-<div class="mb-4">
-  <a href="{% url 'new_forum' %}" class="btn btn-gameTag">New Forum</a>
+<div class="add_topic mt-5 mb-3">
+  <a href="{% url 'new_topic' forum.slug %}" class="btn btn-gameTag">Add topics</a>
 </div>
 
 <div class="container">
 
-
-<div class="posts">
+  <div class="posts mb-5">
     <div class="post__head row">
-        <div class="post__head1 col-6">Forum</div>
-        <div class="post__head2 col-2">Topics</div>
-        <div class="post__head3 col-2">Activity</div>
-        <div class="post__head4 col-2">Delete</div>
+      <div class="post__head1 col-6">Topic</div>
+      <!-- <th>Category</th> -->
+      <div class="post__head2 col-2">Threads</div>
+      <div class="post__head3 col-2">Last thread by</div>
+      <div class="post__head4 col-2">Activity</div>
     </div>
 
     <div class="post__body">
-    {% for forum in forums %}
-        <div class="post__items row">
-              <div class="post__section__left col-6">
-                <div class="post__item">
-                  <div class="post__content row">
-                    <div class="col-4">
-                      <a class="forum" href="{% url 'forum_topic' forum.slug %}">{{ forum.name }}</a>
-                      <small class="text-muted d-block">{{ forum.desc }}</small>
-                    </div>
-                    <div class="col-2 mt-2">
-                        <a href="" class="forum"><i class="large material-icons">settings</i></a>
-                    </div>
+    {% for topic in topics %}
+    <!-- URL for all threads in a topic -->
+    {% url 'topic_threads' topic.forum.slug topic.slug as threads_url %}
+      <div class="post__items row">
+        <div class="post__section__left col-6">
+          <div class="post__item">
+            <div class="post__content">
+              <a class="forum" href="{{ threads_url }}">{{ topic.name }}</a>
+              <small class="text-muted d-block">{{ topic.desc }}</small>
+            </div>
+          </div>
+        </div>
+        <div class="post__section__right col-6">
+          <div class="row">
+            <div class="posts__topics col-4">
+              {{ topic.threads.count }}
+            </div>
+            <div class="posts__users col-4">
+              {% with post=topic.get_last_post %}
+                <small>
+                  <a class="forum" href="#">
+                    {{ post.creator }}
+                  </a>
+                </small>
+              {% endwith %}
+            </div>
+            <div class="posts__activity col-4">
+              {% with post=topic.get_last_post %}
+                <small>
+                  <a class="forum" href="#">
+                    {{ post.created_at|naturaltime }}
+                  </a>
+                </small>
+              {% endwith %}
 
-                  </div>
-                </div>
-
-              </div>
-              <div class="post__section__right col-6">
-                <div class="row">
-                  <div class="posts__topics col-4">
-                    {{ forum.topics.count }}
-                  </div>
-                  <div class="posts__activity col-4">
-                    {% with post=forum.get_last_post %}
-                    <small>
-                      <a class="forum" href="#">
-                      {{ post.created_at }}
-                      </a>
-                    </small>
-                    {% endwith %}
-                  </div>
-                  <div class="posts__users col-4">
-                    <div class="col-1">
-                        <a href="" class="icon_delete"><i class="large material-icons" style="font-size:2rem;">delete</i></a>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
+            </div>
+          </div>
+        </div>
       </div>
-  {% endfor %}
-  </div>
-</div>
+    {% endfor %}
+    </div>
 </div>
 {% endblock %}

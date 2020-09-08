@@ -11,7 +11,7 @@ class ForumFilter(django_filters.FilterSet):
     forum = CharFilter(method='filter_by_all_name_fields', label='', widget=TextInput(attrs=
     {
 
-        'placeholder': 'Search forums',
+        'placeholder': 'Search forum',
         'class': 'searchbox',
 
     }))
@@ -53,7 +53,7 @@ class TopicFilter(django_filters.FilterSet):
     topic = CharFilter(method='filter_by_all_name_fields', label='', widget=TextInput(attrs=
     {
 
-        'placeholder': 'Search topics in forum',
+        'placeholder': 'Search topic',
         'class': 'searchbox',
 
     }))
@@ -72,7 +72,7 @@ class ThreadFilter(django_filters.FilterSet):
     topic = CharFilter(method='filter_by_all_name_fields', label='', widget=TextInput(attrs=
     {
 
-        'placeholder': 'Search thread in topic',
+        'placeholder': 'Search thread',
         'class': 'searchbox',
 
     }))

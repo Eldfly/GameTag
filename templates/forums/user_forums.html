@@ -19,7 +19,8 @@
 
 <div class="posts">
     <div class="post__head row">
-        <div class="post__head1 col-6">Forum</div>
+        <div class="post__head1 col-4">Forum</div>
+        <div class="post__head1 col-2">Published</div>
         <div class="post__head2 col-2">Topics</div>
         <div class="post__head3 col-2">Activity</div>
         <div class="post__head4 col-2">Delete</div>
@@ -31,13 +32,18 @@
               <div class="post__section__left col-6">
                 <div class="post__item">
                   <div class="post__content row">
-                    <div class="col-4">
+                    <div class="col-6">
                       <a class="forum" href="{% url 'forum_topic' forum.slug %}">{{ forum.name }}</a>
                       <small class="text-muted d-block">{{ forum.desc }}</small>
                     </div>
                     <div class="col-2 mt-2">
-                        <a href="" class="forum"><i class="large material-icons">settings</i></a>
+                        <a href="{% url 'edit_forum' forum.slug %}" class="forum"><i class="large material-icons">settings</i></a>
                     </div>
+                    {% if forum.published %}
+                    <div class="col-2 mt-2">
+                        <i class="pl-4 large material-icons" style="color:green; font-weight:bold">check</i>
+                    </div>
+                    {% endif %}
 
                   </div>
                 </div>
