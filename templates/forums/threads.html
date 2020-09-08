@@ -5,12 +5,11 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
-<form method="GET" class="mb-4" novalidate>
-  {% csrf_token %}
-  <button style="visibility: hidden;" type="submit" class="btn btn-gameTag">Search</button>
-  {{searchThread.form|crispy}}
-</form>
+  <form method="GET" class="mb-4" novalidate>
+    {% csrf_token %}
+    <button style="visibility: hidden;" type="submit" class="btn btn-gameTag">Search</button>
+    {{searchThread.form|crispy}}
+  </form>
 
   <ol class="breadcrumb my-4">
     <li class="breadcrumb-item"><a class='forum' href="{% url 'index' %}">Forums</a></li>
@@ -18,10 +17,16 @@
     <li class="breadcrumb-item active">{{ topic.name }}</li>
   </ol>
 {% if user.is_authenticated %}
-<div class="mb-4">
-  <a href="{% url 'new_thread' topic.forum.slug topic.slug %}" class="btn btn-gameTag">New thread</a>
-</div>
+  <div class="mb-4">
+    <a href="{% url 'new_thread' topic.forum.slug topic.slug %}" class="btn btn-gameTag">New thread</a>
+  </div>
 {% endif %}
+
+{% if not threads %}
+  <div class="mt-4">
+  <i style="color:grey; font-size:2rem">This topic don't have any threads yet</i>
+  </div>
+{% else %}
   <table class="table">
    <thead class="thead-inverse">
      <tr>
@@ -58,7 +63,7 @@
      {% endfor %}
    </tbody>
  </table>
-
+{% endif %}
  {% include 'includes/pagination.html' %}
 
 {% endblock content %}

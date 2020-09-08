@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}User Forums{% endblock %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+{% block content %}
+<div class="profile_name mt-5 mb-4">
+<i class="large material-icons" style="font-size:6rem">games</i><h1>{{topic.name}}</h1>
+</div>
+
+<div class="edit_topic">
+  <form method="post" class="mb-4 mt-4" novalidate>
+      {% csrf_token %}
+      {% include 'includes/form.html' %}
+      <button type="submit" class="btn btn-gameTag">Save changes</button>
+      <a class="btn btn-secondary" href="{% url 'edit_forum' object.forum.slug %}" role="button">Cancel</a>
+  </form>
+</div>
+
+{% endblock %}

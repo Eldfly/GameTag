@@ -18,59 +18,63 @@
 
 <div class="container">
 
-<div class="posts">
-    <div class="post__head row">
-      <div class="post__head1 col-6">Topic</div>
-      <!-- <th>Category</th> -->
-      <div class="post__head2 col-2">Threads</div>
-      <div class="post__head3 col-2">Last thread by</div>
-      <div class="post__head4 col-2">Activity</div>
-    </div>
-
-    <div class="post__body">
-    {% for topic in topics %}
-    <!-- URL for all threads in a topic -->
-    {% url 'topic_threads' topic.forum.slug topic.slug as threads_url %}
-      <div class="post__items row">
-        <div class="post__section__left col-6">
-          <div class="post__item">
-            <div class="post__content">
-              <a class="forum" href="{{ threads_url }}">{{ topic.name }}</a>
-              <small class="text-muted d-block">{{ topic.desc }}</small>
-            </div>
-          </div>
-        </div>
-        <div class="post__section__right col-6">
-          <div class="row">
-            <div class="posts__topics col-4">
-              {{ topic.threads.count }}
-            </div>
-            <div class="posts__users col-4">
-              {% with post=topic.get_last_post %}
-                <small>
-                  <a class="forum" href="#">
-                    {{ post.creator }}
-                  </a>
-                </small>
-              {% endwith %}
-            </div>
-            <div class="posts__activity col-4">
-              {% with post=topic.get_last_post %}
-                <small>
-                  <a class="forum" href="#">
-                    {{ post.created_at|naturaltime }}
-                  </a>
-                </small>
-              {% endwith %}
-
-            </div>
-          </div>
-        </div>
-      </div>
-    {% endfor %}
-    </div>
+{% if not topics %}
+<div class="mt-4">
+<i style="color:grey; font-size:2rem">This forum don't have any topics yet</i>
 </div>
+{% else %}
+    <div class="posts">
+        <div class="post__head row">
+          <div class="post__head1 col-6">Topic</div>
+          <!-- <th>Category</th> -->
+          <div class="post__head2 col-2">Threads</div>
+          <div class="post__head3 col-2">Last thread by</div>
+          <div class="post__head4 col-2">Activity</div>
+        </div>
 
+        <div class="post__body">
+        {% for topic in topics %}
+        <!-- URL for all threads in a topic -->
+        {% url 'topic_threads' topic.forum.slug topic.slug as threads_url %}
+          <div class="post__items row">
+            <div class="post__section__left col-6">
+              <div class="post__item">
+                <div class="post__content">
+                  <a class="forum" href="{{ threads_url }}">{{ topic.name }}</a>
+                  <small class="text-muted d-block">{{ topic.desc }}</small>
+                </div>
+              </div>
+            </div>
+            <div class="post__section__right col-6">
+              <div class="row">
+                <div class="posts__topics col-4">
+                  {{ topic.threads.count }}
+                </div>
+                <div class="posts__users col-4">
+                  {% with post=topic.get_last_post %}
+                    <small>
+                      <a class="forum" href="#">
+                        {{ post.creator }}
+                      </a>
+                    </small>
+                  {% endwith %}
+                </div>
+                <div class="posts__activity col-4">
+                  {% with post=topic.get_last_post %}
+                    <small>
+                      <a class="forum" href="#">
+                        {{ post.created_at|naturaltime }}
+                      </a>
+                    </small>
+                  {% endwith %}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div> <!-- END OF post_body -->
+    </div> <!-- END OF posts -->
+{% endif %}
  {% include 'includes/pagination.html' %}
-</div>
+</div> <!-- end of container -->
 {% endblock content %}

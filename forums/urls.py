@@ -17,6 +17,15 @@ urlpatterns = [
     #url for edit a forum
     path('forums/user_forums/<slug:slug>/edit_forum/', views.ForumUpdateView.as_view(), name='edit_forum'),
 
+    #url for edit a forum
+    path('forums/user_forums/<slug:slug>/delete_forum/', views.ForumDeleteView.as_view(), name='delete_forum'),
+
+    #url for edit a topic
+    path('forums/user_forums/<int:topic_id>/edit_topic/', views.TopicUpdateView.as_view(), name='edit_topic'),
+
+    #url for delete a topic
+    path('forums/user_forums/<int:pk>/delete_topic/', views.TopicDeleteView.as_view(), name='delete_topic'),
+
     #url for showing all topics in a forum
     path('forum/<slug:forum_slug>/', views.TopicListView.as_view(), name='forum_topic'),
 

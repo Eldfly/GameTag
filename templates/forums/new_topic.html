@@ -7,7 +7,7 @@
 {% block content %}
 
   <ol class="breadcrumb my-4">
-    <li class="breadcrumb-item"><a class="forum" href="{% url 'index' %}">Forums</a></li>
+    <li class="breadcrumb-item"><a class="forum" href="{% url 'user_forums' %}">Forums</a></li>
     <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_topic' forum.slug %}">{{ forum.name }}</a></li>
     <li class="breadcrumb-item active">New topic</li>
   </ol>

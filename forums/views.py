@@ -5,12 +5,13 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.views.generic import UpdateView, ListView
+from django.views.generic import UpdateView, ListView, DeleteView
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.urls import reverse_lazy
 from .filters import ForumFilter, TopicFilter, ThreadFilter
 
 
@@ -29,25 +30,9 @@ class ForumListView(ListView):
         return context
 
     def get_queryset(self):
-        #self.forum = get_object_or_404(Forum, slug=self.kwargs.get('forum_slug'))
         queryset = Forum.objects.filter(published=True).order_by('name')
         filter = ForumFilter(self.request.GET, queryset=queryset)
         return filter.qs
-
-
-# def index_view(request):
-#
-#     #view the forums on the homepage for the logged in user
-#     forums = Forum.objects.all()
-#     searchForum = ForumFilter(request.GET, queryset=forums)
-#     forums = searchForum.qs
-#
-#     context = {
-#         'forums': forums,
-#         'searchForum': searchForum
-#     }
-#
-#     return render(request, 'index.html', context)
 
 
 class TopicListView(ListView):
@@ -169,9 +154,6 @@ class ForumUpdateView(UpdateView):
 
         context['topics'] = Topic.objects.filter(forum=forum_id)
         topic = Topic.objects.filter(forum=10)
-        print(forum_id)
-        return context
-
         return context
 
     def get_queryset(self):
@@ -186,24 +168,41 @@ class ForumUpdateView(UpdateView):
         return redirect('user_forums')
 
 @method_decorator(login_required, name='dispatch')
+class ForumDeleteView(DeleteView):
+    model = Forum
+    success_url = reverse_lazy('user_forums')
+
+
+@method_decorator(login_required, name='dispatch')
 class TopicUpdateView(UpdateView):
 
     model = Topic
     fields = ('name', 'desc')
-    template_name = 'forums/edit_forum.html'
-    pk_url_kwarg = 'forum_id'
+    template_name = 'forums/edit_topic.html'
+    pk_url_kwarg = 'topic_id'
     context_object_name = 'topic'
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(forum=forum_id)
+        topic_id = id=self.kwargs.get('topic_id')
+        print(topic_id)
+        return queryset.filter(id=topic_id)
 
     def form_valid(self, form):
-        forum = form.save(commit=False)
-        forum.updated_by = self.request.user
-        forum.updated_at = timezone.now()
-        forum.save()
-        return redirect('user_forums')
+        topic = form.save(commit=False)
+        topic.updated_by = self.request.user
+        topic.updated_at = timezone.now()
+        topic.save()
+        return redirect('edit_forum', slug=self.get_object().forum.slug)
+
+@method_decorator(login_required, name='dispatch')
+class TopicDeleteView(DeleteView):
+    model = Topic
+
+    def get_success_url(self):
+
+      forum_slug = self.get_object().forum.slug
+      return reverse_lazy('edit_forum', kwargs={'slug': forum_slug })
 
 
 @login_required
