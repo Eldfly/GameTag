@@ -8,12 +8,9 @@
       {% if user.is_authenticated %}
           <form method="GET" class="mb-4" novalidate>
             {% csrf_token %}
-            <button style="visibility: hidden;" type="submit" class="btn btn-gameTag">Search</button>
             {{searchForum.form|crispy}}
+            <button type="submit" class="btn btn-gameTag">Search</button>
           </form>
-          <div class="mb-4">
-            <a href="{% url 'new_forum' %}" class="btn btn-gameTag">New Forum</a>
-          </div>
       {% else %}
           <div class="container pt-5">
               <div class="mb-4">

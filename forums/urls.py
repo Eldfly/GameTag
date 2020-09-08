@@ -9,6 +9,8 @@ urlpatterns = [
     #path('', views.index_view, name='index'),
     path('', views.ForumListView.as_view(), name='index'),
 
+    path('forums/user_forums/', views.user_forums, name='user_forums'),
+
     #url for creating a new forum
     path('forums/new_forum/', views.new_forum, name='new_forum'),
 

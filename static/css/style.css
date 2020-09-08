@@ -100,7 +100,27 @@
         color: #013b70;
         font-size: 1rem;
         font-weight: bold;
-    }
+}
+
+
+/* Create forum */
+input[name='published']{
+  width: 2%;
+}
+
+/* Forum icons */
+
+a.icon_delete{
+
+  color: red !important;
+
+}
+
+a.icon_delete:visited{
+
+  color: red !important;
+
+}
 
 /* .pagination > li > a
 {
@@ -131,10 +151,7 @@
     border: solid 1px purple;
 } */
 
-/* Create forum */
-input[name='published']{
-  width: 2%;
-}
+
 
 
 /*******************/

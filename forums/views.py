@@ -119,6 +119,19 @@ class PostListView(ListView):
         return queryset
 
 
+@login_required
+def user_forums(request):
+
+    #view the forums on the homepage for the logged in user
+    forums = Forum.objects.filter(owner=request.user.id).order_by('name')
+
+    context = {
+
+        'forums': forums,
+    }
+
+    return render(request, 'forums/user_forums.html', context)
+
 
 def new_forum(request):
 
@@ -139,7 +152,7 @@ def new_forum(request):
                 #     creator = request.user
                 # )
 
-                return redirect('index')
+                return redirect('user_forums')
 
     else:
         form = NewForumForm()
