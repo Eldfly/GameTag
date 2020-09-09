@@ -6,8 +6,12 @@
 <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 
 {% block content %}
-<div class="profile_name mt-5 mb-4">
-<i class="large material-icons" style="font-size:6rem">games</i><h1>{{forum.name}}</h1>
+<ol class="breadcrumb my-4">
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'profile' %}">Profile</a></li>
+  <li class="breadcrumb-item active">Edit forum - {{ forum.name }}</li>
+</ol>
+<div class="mt-3 mb-4">
+<i class="large material-icons" style="font-size:4rem">bookmark</i><h2>{{forum.name}}</h2>
 </div>
 
 <div class="edit_forum">
@@ -15,7 +19,7 @@
       {% csrf_token %}
       {% include 'includes/form.html' %}
       <button type="submit" class="btn btn-gameTag">Save changes</button>
-      <a class="btn btn-secondary" href="{% url 'user_forums' %}" role="button">Cancel</a>
+      <a class="btn btn-secondary" href="{% url 'profile' %}" role="button">Cancel</a>
   </form>
 </div>
 
@@ -23,8 +27,12 @@
   <a href="{% url 'new_topic' forum.slug %}" class="btn btn-gameTag">Add topics</a>
 </div>
 
-
 <div class="container">
+  {% if not topics %}
+    <div class="mt-4">
+    <i style="color:grey; font-size:2rem">This forum don't have any topics yet</i>
+    </div>
+  {% else %}
     <div class="posts mb-5">
         <div class="post__head row">
             <div class="post__head1 col-6">Topic</div>
@@ -35,7 +43,7 @@
 
         <div class="post__body">
         {% for topic in topics %}
-        {% url 'topic_threads' topic.forum.slug topic.slug as threads_url %}
+        {% url 'topic_threads' topic.forum.slug topic.id as threads_url %}
             <div class="post__items row">
                   <div class="post__section__left col-6">
                     <div class="post__item">
@@ -79,5 +87,6 @@
       {% endfor %}
       </div>
     </div>
+  {% endif %}
 </div>
 {% endblock %}

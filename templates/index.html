@@ -6,11 +6,13 @@
 {% block content %}
 <div class="container">
       {% if user.is_authenticated %}
+      <div class="mt-5">
           <form method="GET" class="mb-4" novalidate>
             {% csrf_token %}
             {{searchForum.form|crispy}}
             <button type="submit" class="btn btn-gameTag">Search</button>
           </form>
+      </div>
       {% else %}
           <div class="container pt-5">
               <div class="mb-4">

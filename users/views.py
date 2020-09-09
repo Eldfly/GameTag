@@ -51,9 +51,12 @@ def profile(request):
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
+    forums = Forum.objects.filter(owner=request.user)
+
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'forums': forums,
 
     }
     return render(request, 'users/profile.html', context)

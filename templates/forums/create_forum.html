@@ -6,10 +6,18 @@
 
 {% block content %}
 
+<ol class="breadcrumb my-4">
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'profile' %}">Profile</a></li>
+  <li class="breadcrumb-item active">Create forum</li>
+</ol>
+<div class="mt-3 mb-4">
+<i class="large material-icons" style="font-size:4rem">bookmark</i><h2>Forum</h2>
+</div>
+
   <form method="post" class="mb-4" novalidate>
     {% csrf_token %}
     {% include 'includes/form.html' %}
-    <button type="submit" class="btn btn-gameTag">Create Forum</button>
+    <button type="submit" class="btn btn-gameTag">Create</button>
   </form>
 
 {% endblock %}

@@ -9,10 +9,10 @@ urlpatterns = [
     #path('', views.index_view, name='index'),
     path('', views.ForumListView.as_view(), name='index'),
 
-    path('forums/user_forums/', views.user_forums, name='user_forums'),
+    #path('forums/user_forums/', views.user_forums, name='user_forums'),
 
     #url for creating a new forum
-    path('forums/new_forum/', views.new_forum, name='new_forum'),
+    path('forums/create_forum/', views.create_forum, name='create_forum'),
 
     #url for edit a forum
     path('forums/user_forums/<slug:slug>/edit_forum/', views.ForumUpdateView.as_view(), name='edit_forum'),
@@ -33,10 +33,10 @@ urlpatterns = [
     path('forum/<slug:forum_slug>/new_topic/', views.new_topic, name='new_topic'),
 
     #url for showing all threads in a forum topic
-    path('forum/<slug:forum_slug>/topic/<slug:topic_slug>/threads/', views.ThreadListView.as_view(), name='topic_threads'),
+    path('forum/<slug:forum_slug>/topic/<int:topic_id>/threads/', views.ThreadListView.as_view(), name='topic_threads'),
 
     #url for creating a new thread in a forum topic
-    path('forum/<slug:forum_slug>/topic/<slug:topic_slug>/new_thread/', views.new_thread, name='new_thread'),
+    path('forum/<slug:forum_slug>/topic/<int:topic_id>/new_thread/', views.new_thread, name='new_thread'),
 
     #url for showing all posts for a thread in a specific fourm
     path('forum/<slug:forum_slug>/topic/<slug:topic_slug>/threads/<int:thread_id>', views.PostListView.as_view(), name='thread_posts'),

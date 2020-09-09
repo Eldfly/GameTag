@@ -3,7 +3,7 @@ from .models import Forum, Topic, Thread, Post
 
 
 
-class NewForumForm(forms.ModelForm):
+class CreateForumForm(forms.ModelForm):
 
     class Meta:
         model = Forum

@@ -35,7 +35,7 @@
         <div class="post__body">
         {% for topic in topics %}
         <!-- URL for all threads in a topic -->
-        {% url 'topic_threads' topic.forum.slug topic.slug as threads_url %}
+        {% url 'topic_threads' topic.forum.slug topic.id as threads_url %}
           <div class="post__items row">
             <div class="post__section__left col-6">
               <div class="post__item">

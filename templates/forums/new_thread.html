@@ -9,7 +9,7 @@
   <ol class="breadcrumb my-4">
     <li class="breadcrumb-item"><a class="forum" href="{% url 'home' %}">Forums</a></li>
     <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_topic' topic.forum.slug %}">{{ topic.forum.name }}</a></li>
-    <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' topic.forum.slug topic.slug %}">{{ topic.name }}</a></li>
+    <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' topic.forum.slug topic.id %}">{{ topic.name }}</a></li>
     <li class="breadcrumb-item active">New thread</li>
   </ol>
 

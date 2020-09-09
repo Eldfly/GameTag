@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import NewThreadForm, ReplyPostForm, NewTopicForm, NewForumForm
+from .forms import NewThreadForm, ReplyPostForm, NewTopicForm, CreateForumForm
 from .models import Thread, Forum, Post, Topic
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
@@ -55,6 +55,7 @@ class TopicListView(ListView):
         queryset = self.forum.topics.order_by('-last_activity')
         filter = TopicFilter(self.request.GET, queryset=queryset)
         return filter.qs
+        
 
 class ThreadListView(ListView):
 
@@ -73,7 +74,7 @@ class ThreadListView(ListView):
 
 
     def get_queryset(self):
-        self.topic = get_object_or_404(Topic, slug=self.kwargs.get('topic_slug'))
+        self.topic = get_object_or_404(Topic, id=self.kwargs.get('topic_id'))
         queryset = self.topic.threads.order_by('-last_activity').annotate(replies=Count('posts') - 1)
         filter = ThreadFilter(self.request.GET, queryset=queryset)
         return filter.qs
@@ -104,24 +105,24 @@ class PostListView(ListView):
         return queryset
 
 
-@login_required
-def user_forums(request):
+# @login_required
+# def user_forums(request):
+#
+#     #view the forums on the homepage for the logged in user
+#     forums = Forum.objects.filter(owner=request.user.id).order_by('name')
+#
+#     context = {
+#
+#         'forums': forums,
+#     }
+#
+#     return render(request, 'forums/user_forums.html', context)
 
-    #view the forums on the homepage for the logged in user
-    forums = Forum.objects.filter(owner=request.user.id).order_by('name')
 
-    context = {
-
-        'forums': forums,
-    }
-
-    return render(request, 'forums/user_forums.html', context)
-
-
-def new_forum(request):
+def create_forum(request):
 
     if request.method=='POST':
-            form = NewForumForm(request.POST)
+            form = CreateForumForm(request.POST)
 
             if form.is_valid():
 
@@ -129,12 +130,12 @@ def new_forum(request):
                 forum.owner = request.user
                 forum.save()
 
-                return redirect('user_forums')
+                return redirect('profile')
 
     else:
-        form = NewForumForm()
+        form = CreateForumForm()
 
-    return render(request, 'forums/new_forum.html', {'form': form})
+    return render(request, 'forums/create_forum.html', {'form': form})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -165,27 +166,26 @@ class ForumUpdateView(UpdateView):
         forum.updated_by = self.request.user
         forum.updated_at = timezone.now()
         forum.save()
-        return redirect('user_forums')
+        return redirect('profile')
 
 @method_decorator(login_required, name='dispatch')
 class ForumDeleteView(DeleteView):
     model = Forum
-    success_url = reverse_lazy('user_forums')
+    success_url = reverse_lazy('profile')
 
 
 @method_decorator(login_required, name='dispatch')
 class TopicUpdateView(UpdateView):
 
     model = Topic
-    fields = ('name', 'desc')
+    fields = ('desc',)
     template_name = 'forums/edit_topic.html'
     pk_url_kwarg = 'topic_id'
     context_object_name = 'topic'
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        topic_id = id=self.kwargs.get('topic_id')
-        print(topic_id)
+        topic_id = self.kwargs.get('topic_id')
         return queryset.filter(id=topic_id)
 
     def form_valid(self, form):
@@ -239,12 +239,11 @@ def new_topic(request, forum_slug):
     return render(request, 'forums/new_topic.html', {'forum': forum, 'form': form})
 
 
-
 @login_required
-def new_thread(request, forum_slug, topic_slug):
-
+def new_thread(request, forum_slug, topic_id):
+    print(topic_id)
     try:
-        topic  = get_object_or_404(Topic, slug=topic_slug)
+        topic  = get_object_or_404(Topic, id=topic_id)
 
     except Forum.DoesNotExist:
         raise Http404
@@ -266,7 +265,7 @@ def new_thread(request, forum_slug, topic_slug):
                     creator = request.user
                 )
 
-                return redirect('topic_threads', forum_slug=forum_slug, topic_slug=topic_slug)
+                return redirect('topic_threads', forum_slug=forum_slug, topic_id=topic_id)
 
     else:
         form = NewThreadForm()

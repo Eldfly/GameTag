@@ -6,11 +6,14 @@
 
 {% block content %}
 
-  <ol class="breadcrumb my-4">
-    <li class="breadcrumb-item"><a class="forum" href="{% url 'user_forums' %}">Forums</a></li>
-    <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_topic' forum.slug %}">{{ forum.name }}</a></li>
-    <li class="breadcrumb-item active">New topic</li>
-  </ol>
+<ol class="breadcrumb my-4">
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'edit_forum' forum.slug %}">{{forum.name}}</a></li>
+  <li class="breadcrumb-item active">Add topic</li>
+  <li class="breadcrumb-item forum">{{ topic.name }}</li>
+</ol>
+<div class="mt-3 mb-4">
+<i class="large material-icons" style="font-size:4rem">games</i><h2>{{topic.name}}</h2>
+</div>
 
   <form method="post" class="mb-4" novalidate>
     {% csrf_token %}

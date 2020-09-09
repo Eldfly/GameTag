@@ -18,7 +18,7 @@
   </ol>
 {% if user.is_authenticated %}
   <div class="mb-4">
-    <a href="{% url 'new_thread' topic.forum.slug topic.slug %}" class="btn btn-gameTag">New thread</a>
+    <a href="{% url 'new_thread' topic.forum.slug topic.id %}" class="btn btn-gameTag">New thread</a>
   </div>
 {% endif %}
 
