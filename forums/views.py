@@ -20,7 +20,7 @@ class ForumListView(ListView):
     model = Forum
     context_object_name = 'forums'
     template_name = 'index.html'
-    paginate_by = 20
+    paginate_by = 15
 
     def get_context_data(self, **kwargs):
         forums = Forum.objects.filter(published=True).order_by('name')
@@ -40,7 +40,7 @@ class TopicListView(ListView):
     model = Topic
     context_object_name = 'topics'
     template_name = 'forums/topics.html'
-    paginate_by = 20
+    paginate_by = 15
 
     def get_context_data(self, **kwargs):
         kwargs['forum'] = self.forum
@@ -55,14 +55,14 @@ class TopicListView(ListView):
         queryset = self.forum.topics.order_by('-last_activity')
         filter = TopicFilter(self.request.GET, queryset=queryset)
         return filter.qs
-        
+
 
 class ThreadListView(ListView):
 
     model = Thread
     context_object_name = 'threads'
     template_name = 'forums/threads.html'
-    paginate_by = 30
+    paginate_by = 15
 
     def get_context_data(self, **kwargs):
         kwargs['topic'] = self.topic
@@ -72,12 +72,18 @@ class ThreadListView(ListView):
         context['searchThread'] = ThreadFilter(self.request.GET, queryset=thread)
         return context
 
-
     def get_queryset(self):
         self.topic = get_object_or_404(Topic, id=self.kwargs.get('topic_id'))
         queryset = self.topic.threads.order_by('-last_activity').annotate(replies=Count('posts') - 1)
         filter = ThreadFilter(self.request.GET, queryset=queryset)
         return filter.qs
+
+@method_decorator(login_required, name='dispatch')
+class ThreadDeleteView(DeleteView):
+    model = Thread
+
+    def get_success_url(self):
+        return reverse_lazy('topic_threads', kwargs={'forum_slug': self.kwargs['forum_slug'], 'topic_id': self.kwargs['topic_id']})
 
 
 class PostListView(ListView):
@@ -274,7 +280,7 @@ def new_thread(request, forum_slug, topic_id):
 
 
 @login_required
-def reply_thread(request, forum_slug, topic_slug, thread_id):
+def reply_thread(request, forum_slug, topic_id, thread_id):
 
     try:
         thread  = get_object_or_404(Thread, id=thread_id)
@@ -295,7 +301,7 @@ def reply_thread(request, forum_slug, topic_slug, thread_id):
                 thread.last_activity = timezone.now()
                 thread.save()
 
-                thread_url = reverse('thread_posts', kwargs={'forum_slug': forum_slug, 'topic_slug': topic_slug, 'thread_id': thread_id})
+                thread_url = reverse('thread_posts', kwargs={'forum_slug': forum_slug, 'topic_id': topic_id, 'thread_id': thread_id})
                 thread_post_url = '{url}?page={page}#{id}'.format(
                     url=thread_url,
                     id=post.id,
@@ -329,4 +335,12 @@ class PostUpdateView(UpdateView):
         post.updated_by = self.request.user
         post.updated_at = timezone.now()
         post.save()
-        return redirect('thread_posts', forum_slug=post.thread.topic.forum.slug, topic_slug=post.thread.topic.slug, thread_id=post.thread.id)
+        return redirect('thread_posts', forum_slug=post.thread.topic.forum.slug, topic_id=post.thread.topic.id, thread_id=post.thread.id)
+
+@method_decorator(login_required, name='dispatch')
+class PostDeleteView(DeleteView):
+    model = Post
+
+    def get_success_url(self):
+
+        return reverse_lazy('thread_posts', kwargs={'forum_slug': self.kwargs['forum_slug'], 'topic_id': self.kwargs['topic_id'], 'thread_id': self.kwargs['thread_id']})

@@ -7,7 +7,7 @@
   <ol class="breadcrumb mb-4">
   <li class="breadcrumb-item"><a class="forum" href="{% url 'index' %}">Forums</a></li>
   <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_topic' thread.topic.forum.slug %}">{{thread.topic.forum.name}}</a></li>
-  <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' thread.topic.forum.slug thread.topic.slug %}">{{thread.topic.name}}</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' thread.topic.forum.slug thread.topic.id %}">{{thread.topic.name}}</a></li>
   <li class="breadcrumb-item active">{{thread.name}}</li>
   </ol>
 
@@ -18,7 +18,7 @@
   <div class="row mb-4">
     <div class="col">
       <div class="mb-4">
-         <a href="{% url 'reply_thread' thread.topic.forum.slug thread.topic.slug thread.id %}" class="btn btn-gameTag" role="button">Reply</a>
+         <a href="{% url 'reply_thread' thread.topic.forum.slug thread.topic.id thread.id %}" class="btn btn-gameTag" role="button">Reply</a>
        </div>
     </div>
     <div class="col">
@@ -45,11 +45,18 @@
              </div>
            </div>
            {{ post.get_content_as_markdown }}
+           <div class="row">
+
+           </div>
            {% if post.creator == user %}
              <div class="mt-3">
-               <a href="{% url 'edit_post' post.thread.topic.forum.slug thread.topic.slug thread.id post.id %}" class="btn btn-gameTag btn-sm" role="button">Edit</a>
+               <a href="{% url 'edit_post' post.thread.topic.forum.slug thread.topic.id thread.id post.id %}" class="btn btn-gameTag btn-sm" role="button">Edit</a>
+               {% if post.creator == user or thread.topic.forum.owner == user %}
+                   <a href="{% url 'delete_post' thread.topic.forum.slug thread.topic.id thread.id post.id %}" class="btn btn-danger btn-sm" role="button">Delete</a>
+               {% endif %}
              </div>
            {% endif %}
+
          </div>
        </div>
      </div>
@@ -57,7 +64,7 @@
   {% endfor %}
   {% if posts|length > 5 %}
   <div class="mb-4">
-    <a href="{% url 'reply_thread' thread.topic.forum.slug thread.topic.slug thread.id %}" class="btn btn-gameTag" role="button">Reply</a>
+    <a href="{% url 'reply_thread' thread.topic.forum.slug thread.topic.id thread.id %}" class="btn btn-gameTag" role="button">Reply</a>
   </div>
   {% endif %}
 

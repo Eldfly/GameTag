@@ -7,15 +7,18 @@
 <ol class="breadcrumb my-4">
   <li class="breadcrumb-item"><a class="forum" href="{% url 'index' %}">Forums</a></li>
   <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_topic' post.thread.topic.forum.slug %}">{{ post.thread.topic.forum.name }}</a></li>
-  <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' post.thread.topic.forum.slug post.thread.topic.slug %}">{{ post.thread.topic.name }}</a></li>
-  <li class="breadcrumb-item"><a class="forum" href="{% url 'thread_posts' post.thread.topic.forum.slug post.thread.topic.slug post.thread.id %}">{{ post.thread.name }}</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' post.thread.topic.forum.slug post.thread.topic.id %}">{{ post.thread.topic.name }}</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'thread_posts' post.thread.topic.forum.slug post.thread.topic.id post.thread.id %}">{{ post.thread.name }}</a></li>
   <li class="breadcrumb-item active">Edit post</li>
 </ol>
+<div class="mt-3 mb-4">
+<i class="large material-icons" style="font-size:4rem">edit</i><h2>{{post.thread.name}}</h2>
+</div>
 
   <form method="post" class="mb-4" novalidate>
     {% csrf_token %}
     {% include 'includes/form.html' %}
     <button type="submit" class="btn btn-gameTag">Save changes</button>
-    <a class="forum" href="" class="btn btn-outline-secondary" role="button">Cancel</a>
+    <a href="{% url 'thread_posts' post.thread.topic.forum.slug post.thread.topic.id post.thread.id %}" class="btn btn-secondary" role="button">Cancel</a>
   </form>
 {% endblock %}

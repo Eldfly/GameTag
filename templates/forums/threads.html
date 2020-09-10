@@ -27,7 +27,7 @@
   <i style="color:grey; font-size:2rem">This topic don't have any threads yet</i>
   </div>
 {% else %}
-  <table class="table">
+  <table class="table mb-5">
    <thead class="thead-inverse">
      <tr>
        <th>Thread</th>
@@ -43,7 +43,7 @@
        <tr>
          <td>
             <p class="mb-0">
-              <a class="forum" href="{% url 'thread_posts' topic.forum.slug thread.topic.slug thread.id %}">{{ thread.name }}</a>
+              <a class="forum" href="{% url 'thread_posts' topic.forum.slug thread.topic.id thread.id %}">{{ thread.name }}</a>
             </p>
             <small class="text-muted">
               Pages:

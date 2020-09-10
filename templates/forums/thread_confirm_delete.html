@@ -8,13 +8,11 @@
 {% block content %}
 <div class="container">
     <div class="profile_name mt-5">
-    <i class="large material-icons" style="font-size:6rem">delete_forever</i><h1>Are you sure you want to delete "{{ object }}"?</h1>
+    <i class="large material-icons" style="font-size:6rem">delete_forever</i><h1>Are you sure you want to delete post with content "{{ object.content }}"?</h1>
     </div>
-
     <div class="delete_topic mt-5">
       <form method="post">{% csrf_token %}
-
-          <button type="submit" class="btn btn-danger">DELETE TOPIC</button>
+          <button type="submit" class="btn btn-danger">DELETE THREAD</button>
           <a class="btn btn-secondary" href="{{view.get_success_url}}" role="button">CANCEL</a>
       </form>
     </div>

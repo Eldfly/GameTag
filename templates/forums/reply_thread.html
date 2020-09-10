@@ -4,10 +4,13 @@
 <ol class="breadcrumb my-4">
   <li class="breadcrumb-item"><a class="forum" href="{% url 'index' %}">Forums</a></li>
   <li class="breadcrumb-item"><a class="forum" href="{% url 'forum_topic' thread.topic.forum.slug %}">{{ thread.topic.forum.name }}</a></li>
-  <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' thread.topic.forum.slug thread.topic.slug %}">{{ thread.topic.name }}</a></li>
-  <li class="breadcrumb-item"><a class="forum" href="{% url 'thread_posts' thread.topic.forum.slug thread.topic.slug thread.id %}">{{ thread.name }}</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'topic_threads' thread.topic.forum.slug thread.topic.id %}">{{ thread.topic.name }}</a></li>
+  <li class="breadcrumb-item"><a class="forum" href="{% url 'thread_posts' thread.topic.forum.slug thread.topic.id thread.id %}">{{ thread.name }}</a></li>
   <li class="breadcrumb-item active">Reply</li>
 </ol>
+<div class="mt-3 mb-4">
+<i class="large material-icons" style="font-size:4rem">reply</i><h2>{{thread.name}}</h2>
+</div>
 
 <form method="post" class="mb-4" novalidate>
   {% csrf_token %}
