@@ -16,7 +16,7 @@
             <small class="text-muted">{{thread.posts.first.created_at}}</small>
           </div>
         </div>
-        {{thread.posts.first}}
+        {{thread.posts.first.get_content_as_markdown}}
 
         {% if thread.posts.first.creator == user %}
           <div class="mt-3">
