@@ -24,16 +24,6 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
 
-def home(request):
-
-    #view the forums on the homepage for the logged in user
-    forums = Forum.objects.all()
-    context = {
-        'forums': forums
-    }
-
-    return render(request, 'users/home.html', context)
-
 @login_required
 def profile(request):
 
