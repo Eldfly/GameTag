@@ -38,23 +38,25 @@ def home(request):
 def profile(request):
 
     if request.method == 'POST':
-        u_form = UserUpdateForm(request.POST,instance=request.user)
+        #u_form = UserUpdateForm(request.POST,instance=request.user)
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
 
-        if u_form.is_valid() and p_form.is_valid:
-            u_form.save()
+        #u_form.is_valid() and
+        #u_form.save()
+        if p_form.is_valid:
+
             p_form.save()
             messages.success(request, f'You have updated your information')
             return redirect('profile')
 
     else:
-        u_form = UserUpdateForm(instance=request.user)
+        #u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
     forums = Forum.objects.filter(owner=request.user)
 
     context = {
-        'u_form': u_form,
+        #'u_form': u_form,
         'p_form': p_form,
         'forums': forums,
 

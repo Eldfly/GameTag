@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="container pt-5">
+
+          <h1 class="mb-5">User License Aggrenment</h1>
+
+          <h2 class="mb-4 mt-2">Welcome to GameTag</h2>
+
+          <ul class="list-group list-group-flush">
+             <li class="list-group-item">When you sign up as a user on this site you agree that we can store your personal data (eg name, email address or other contact information)</li>
+             <li class="list-group-item">We do not charge you for using GameTag. This is a non-profit page</li>
+             <li class="list-group-item">We do not sell your personal information to advertisers,
+               and we do not share information that directly identifies you
+               (eg name, email address or other contact information)</li>
+
+             <li class="list-group-item">We are constantly working to improve our services and develop new features to
+               make our products better for you and our community. Therefore, we may sometimes need to update
+               these Terms of Use to accurately reflect our services and practices</li>
+             <li class="list-group-item">You may not use our products, services or software in accordance with applicable local laws.</li>
+             <li class="list-group-item">You're not allowed to share content which is unlawful, misleading, discriminatory or fraudulent</li>
+             <li class="list-group-item">You may not seek access to or collect data from our products using automated means (without our prior permission) or attempt to access data for which you are not authorized.</li>
+             <li class="list-group-item">Posts and signatures that are not in English may be deleted without notice.</li>
+             <li class="list-group-item">Distribution or publication of copyrighted material without the author's permission is prohibited.</li>
+             <li class="list-group-item">It is forbidden to threaten or express contempt for particularly vulnerable groups, alluding to race, color, national or ethnic origin, creed or sexual orientation.</li>
+             <li class="list-group-item">Incitement and more serious threats are forbidden. It is also forbidden to organize criminal activities from the forum</li>
+             <li class="list-group-item">It is forbidden to request or distribute links to pornographic images or movies with persons under 18 years of age.</li>
+             <li class="list-group-item">Serious personal attacks, harassment, threats or covert threats against other users are prohibited.</li>
+             <li class="list-group-item">Dissemination of links to computer viruses or other malicious code is prohibited unless it is made clear that the links are harmful.</li>
+          </ul>
+
+            <a class="register mt-2" href="{% url 'register' %}"> < Back to register</a>
+  </div>
+
+</div>
+ {% include 'includes/pagination.html' %}
+
+{% endblock content %}

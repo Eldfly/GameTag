@@ -27,7 +27,6 @@
 
 
 
-
 /**************FORUM LAYOUT****************/
 .post__head{
 
@@ -163,24 +162,15 @@ a.icon_delete:visited{
   font-weight: bold;
 }
 
-a:link {
-  color: #fff !important;
-}
 
-/* visited link */
-a:visited {
-  color: #fff !important;
-}
+/* LINKS */
 
-/* mouse over link */
-a:hover {
-  color: #fff !important;
-  text-decoration: none !important;
-}
-
-/* selected link */
+a:link,
+a:visited,
+a:hover,
 a:active {
-  color: #fff !important;
+  text-decoration: none;
+  color: #fff;
 }
 
 a.forum {
@@ -191,5 +181,13 @@ a.forum {
 a.foot {
   color: #000 !important;
   font-size: 12px !important;
+  text-decoration: none !important;
+}
+
+a.register,
+a.register:visited,
+a.register:hover,
+a.register:active{
+  color: blue !important;
   text-decoration: none !important;
 }
