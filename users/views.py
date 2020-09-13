@@ -62,3 +62,6 @@ def profile(request):
 
     }
     return render(request, 'users/profile.html', context)
+
+def license_view(request):
+    return render(request, 'users/user_agreement.html')
