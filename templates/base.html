@@ -19,7 +19,7 @@
     <meta charset="utf-8">
     <title>{% block title %}GameTag{% endblock %}</title>
   </head>
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <div class="container mb-3">
       <nav class="navbar navbar-expand-lg" style="background-color: #862d86">
         {% if user.is_authenticated %}
@@ -69,15 +69,15 @@
 
     <div class="container mt-5">
         <!-- Footer -->
-        <footer class="page-footer font-small text-white bg-dark pt-4">
+        <footer class="page-footer mt-auto font-small pt-4">
 
           <!-- Footer Links -->
           <div class="container-fluid text-center text-md-left">
 
-              <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="">GameTag.se</a>
-                <p>info@gametag.se</p>
-              </div>
+              <small class="footer-copyright text-center pb-1">© 2020 Copyright:
+                GameTag.se
+                <a href="mailto:info@gametag.se" class="forum">info@gametag.se</a>
+              </small>
           </div>
 
         </footer>
