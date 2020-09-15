@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 import math
 from django.utils.html import mark_safe
 from markdown import markdown
+from django.shortcuts import reverse
 
 #DEFAULT VALUES IF none is set
 DEFAULT_USER_ID = 1
@@ -41,6 +42,10 @@ class Forum(models.Model):
             self.slug = slugify(self.name)
         super(Forum, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        #return f'/forum/{self.slug}/'
+        return reverse('forums', kwargs={'forum_slug': self.slug})
+
     def get_posts_count(self):
         return Post.objects.filter(thread__topic__forum=self).count()
 
@@ -70,6 +75,10 @@ class Topic(models.Model):
     def __str__(self):
         truncated_name = Truncator(self.name)
         return truncated_name.chars(30)
+
+    # def get_absolute_url(self):
+    #     #return f'/forum/{self.slug}/'
+    #     return f'/forum/{self.forum.slug}/topic/{self.slug}/'
 
     def get_thread_count(self):
         return self.threads.count()
@@ -111,6 +120,10 @@ class Thread(models.Model):
         truncated_name = Truncator(self.name)
         return truncated_name.chars(30)
 
+    # def get_absolute_url(self):
+    #     #return f'/forum/{self.slug}/'
+    #     return f'/forum/{self.forum.slug}/topic/{self.topic.slug}/threads/{self.id}'
+
     def get_page_count(self):
         count = self.posts.count()
         pages = count / 4
@@ -129,8 +142,6 @@ class Thread(models.Model):
 
     def get_last_ten_posts(self):
         return self.posts.order_by('-created_at')[:10]
-
-
 
 class Post(models.Model):
 

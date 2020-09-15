@@ -9,6 +9,9 @@ urlpatterns = [
     #path('', views.index_view, name='index'),
     path('', views.ForumListView.as_view(), name='index'),
 
+    #url for list all forums (only used for sitemap)
+    path('forums/<slug:forum_slug>/', views.ForumListView.as_view(), name='forums'),
+
     #path('forums/user_forums/', views.user_forums, name='user_forums'),
 
     #url for creating a new forum
@@ -17,7 +20,7 @@ urlpatterns = [
     #url for edit a forum
     path('forums/user_forums/<slug:slug>/edit_forum/', views.ForumUpdateView.as_view(), name='edit_forum'),
 
-    #url for edit a forum
+    #url for delete a forum
     path('forums/user_forums/<slug:slug>/delete_forum/', views.ForumDeleteView.as_view(), name='delete_forum'),
 
 
