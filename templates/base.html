@@ -2,6 +2,15 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-178055643-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-178055643-1');
+    </script>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -17,7 +26,8 @@
 
 
     <meta charset="utf-8">
-    <title>{% block title %}GameTag{% endblock %}</title>
+    <meta name="description" content="A place where gamers can hangout and meet other gamers.  Create your own forum and start discussion games with other gamers">
+    <title>{% block title %}GameTag - A place where gamers can hangout and meet other gamers{% endblock %}</title>
   </head>
   <body class="d-flex flex-column min-vh-100">
     <div class="container mb-3">
@@ -62,7 +72,7 @@
 
     </div>
     {% endif %}
-    <div class="container">
+    <div class="container">      
       {% block content %}
       {% endblock content %}
     </div>
