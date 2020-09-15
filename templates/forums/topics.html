@@ -5,6 +5,7 @@
 {% load humanize %}
 {% block content %}
 
+{% block title %}{{forum.name}} - Topics{% endblock %}
 <form method="GET" class="mb-4" novalidate>
   {% csrf_token %}
   <button style="visibility: hidden;" type="submit" class="btn btn-gameTag">Search</button>

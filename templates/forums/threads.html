@@ -3,6 +3,8 @@
 {% load static %}
 {% load humanize %}
 {% load crispy_forms_tags %}
+
+{% block title %}{{topic.forum.name}} - {{topic.name}} - threads{% endblock %}
 {% block content %}
 
   <form method="GET" class="mb-4" novalidate>
